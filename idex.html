@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stylish Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Dark mode */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+        }
+
+        #auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        #dark-mode-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #todo-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #task-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        #add-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .task {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .task input {
+            width: 100%;
+            display: none;
+        }
+
+        .star-button, .edit-button, .save-button, .delete-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: none;
+        }
+
+        .star-button {
+            color: #FFD700; /* Gold color */
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
+        li:hover .star-button, li:hover .edit-button, li:hover .delete-button {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="auth-buttons">
+            <button id="signup-button">Sign Up</button>
+            <button id="login-button">Login</button>
+        </div>
+        <button id="dark-mode-button">Toggle Dark Mode</button>
+    </div>
+    
+    <div id="todo-container">
+        <h1>Task Manager</h1>
+        <input type="text" id="task-input" placeholder="Add a task...">
+        <button id="add-button">Add Task</button>
+        <ul id="task-list"></ul>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById("task-input");
+        const addButton = document.getElementById("add-button");
+        const taskList = document.getElementById("task-list");
+        const darkModeButton = document.getElementById("dark-mode-button");
+        const signupButton = document.getElementById("signup-button");
+        const loginButton = document.getElementById("login-button");
+
+        addButton.addEventListener("click", () => {
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <div class="task">
+                        <button class="star-button">&#9733;</button>
+                        <span>${taskText}</span>
+                        <input type="text" value="${taskText}" />
+                        <button class="edit-button">Edit</button>
+                        <button class="save-button">Save</button>
+                        <button class="delete-button">Delete</button>
+                    </div>
+                `;
+                taskList.appendChild(listItem);
+                taskInput.value = "";
+
+                const starButton = listItem.querySelector(".star-button");
+                const editButton = listItem.querySelector(".edit-button");
+                const saveButton = listItem.querySelector(".save-button");
+                const deleteButton = listItem.querySelector(".delete-button");
+                const taskSpan = listItem.querySelector(".task span");
+                const taskInputField = listItem.querySelector("input");
+
+                starButton.addEventListener("click", () => {
+                    // Toggle the gold star
+                    starButton.classList.toggle("starred");
+                });
+
+                editButton.addEventListener("click", () => {
+                    taskSpan.style.display = "none";
+                    taskInputField.style.display = "block";
+                    editButton.style.display = "none";
+                    saveButton.style.display = "inline";
+                });
+
+                saveButton.addEventListener("click", () => {
+                    taskSpan.style.display = "block";
+                    taskInputField.style.display = "none";
+                    editButton.style. display = "inline";
+                    saveButton.style.display = "none";
+                    taskSpan.textContent = taskInputField.value;
+                });
+
+                deleteButton.addEventListener("click", () => {
+                    taskList.removeChild(listItem);
+                });
+            }
+        });
+
+        darkModeButton.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+        });
+
+        // Add functionality to the signup and login buttons here
+    </script>
+</body>
+</html>
